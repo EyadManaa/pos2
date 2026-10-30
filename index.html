@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Point of Sale - Register 01</title>
 
   <!-- Google Fonts: Inter -->
@@ -16,447 +16,280 @@
   <!-- External Stylesheet -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
-  <!-- Tailwind Config Verbatim from Stitch Design System -->
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          "colors": {
-            "on-background": "#0b1c30",
-            "primary-container": "#0f766e",
-            "surface-bright": "#f8f9ff",
-            "surface-container": "#e5eeff",
-            "surface-tint": "#006a63",
-            "secondary-container": "#d5e3fd",
-            "primary-fixed": "#9cf2e8",
-            "error-container": "#ffdad6",
-            "on-primary": "#ffffff",
-            "secondary-fixed": "#d5e3fd",
-            "inverse-on-surface": "#eaf1ff",
-            "secondary": "#515f74",
-            "on-error-container": "#93000a",
-            "on-primary-container": "#a3faef",
-            "outline-variant": "#bdc9c6",
-            "on-tertiary-container": "#ffe6d5",
-            "error": "#ba1a1a",
-            "on-secondary-container": "#57657b",
-            "on-secondary-fixed": "#0d1c2f",
-            "on-primary-fixed-variant": "#00504a",
-            "inverse-primary": "#80d5cb",
-            "surface-container-lowest": "#ffffff",
-            "tertiary-fixed-dim": "#ffb77d",
-            "surface-variant": "#d3e4fe",
-            "on-tertiary": "#ffffff",
-            "surface-dim": "#cbdbf5",
-            "on-surface-variant": "#3e4947",
-            "on-surface": "#0b1c30",
-            "on-tertiary-fixed-variant": "#6e3900",
-            "tertiary": "#7d4200",
-            "on-tertiary-fixed": "#2f1500",
-            "outline": "#6e7977",
-            "primary-fixed-dim": "#80d5cb",
-            "surface": "#f8f9ff",
-            "on-secondary": "#ffffff",
-            "inverse-surface": "#213145",
-            "secondary-fixed-dim": "#b9c7e0",
-            "on-primary-fixed": "#00201d",
-            "surface-container-low": "#eff4ff",
-            "surface-container-high": "#dce9ff",
-            "surface-container-highest": "#d3e4fe",
-            "on-secondary-fixed-variant": "#3a485c",
-            "tertiary-container": "#a15600",
-            "background": "#f8f9ff",
-            "primary": "#005c55",
-            "on-error": "#ffffff",
-            "tertiary-fixed": "#ffdcc3"
-          },
-          "borderRadius": {
-            "DEFAULT": "0.25rem",
-            "lg": "0.5rem",
-            "xl": "0.75rem",
-            "full": "9999px"
-          },
-          "spacing": {
-            "gutter-lg": "1rem",
-            "space-sm": "0.5rem",
-            "space-md": "0.75rem",
-            "margin": "1rem",
-            "margin-lg": "1.5rem",
-            "space-lg": "1rem",
-            "gutter": "0.75rem",
-            "space-xs": "0.25rem",
-            "space-xl": "1.5rem"
-          },
-          "fontFamily": {
-            "label-md": ["Inter"],
-            "body-lg": ["Inter"],
-            "body-sm": ["Inter"],
-            "body-md": ["Inter"],
-            "headline-lg": ["Inter"],
-            "headline-xl": ["Inter"],
-            "numeric-total": ["Inter"],
-            "label-sm": ["Inter"],
-            "headline-md": ["Inter"],
-            "label-lg": ["Inter"],
-            "numeric-keypad": ["Inter"],
-            "title-lg": ["Inter"]
-          },
-          "fontSize": {
-            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
-            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
-            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
-            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
-            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
-            "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-            "numeric-total": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
-            "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
-            "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
-            "numeric-keypad": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
-            "title-lg": ["18px", { "lineHeight": "24px", "fontWeight": "600" }]
-          }
-        },
-      },
-    }
-  </script>
+  <!-- External JavaScript -->
+  <script src="script.js" defer></script>
 </head>
-<body class="bg-background text-on-surface flex flex-col h-screen overflow-hidden select-none">
+<body>
 
-  <!-- TOP APP BAR -->
-  <header class="bg-surface-container-lowest border-b border-outline-variant flex justify-between items-center w-full px-space-lg py-space-sm h-14 z-20 shrink-0 shadow-sm">
-    <div class="flex items-center gap-space-md">
-      <img src="images/logo.svg" alt="Artisan Roast &amp; Bakery Logo" class="w-9 h-9 rounded-xl object-contain shadow-xs">
-      <div class="flex flex-col">
-        <h1 class="text-title-lg font-title-lg font-bold text-on-surface tracking-tight leading-tight">Artisan Roast &amp; Bakery</h1>
-        <span class="text-label-sm font-label-sm text-secondary">POS Station 01 • Main Bistro</span>
+  <!-- Top App Bar -->
+  <header class="pos-header">
+    <div class="brand-group">
+      <img src="images/logo.svg" alt="Artisan Roast &amp; Bakery Logo" class="brand-logo">
+      <div class="brand-info">
+        <h1 class="brand-title">Artisan Roast &amp; Bakery</h1>
+        <span class="brand-subtitle">POS Station 01 • Main Bistro</span>
       </div>
     </div>
-    <div class="flex items-center gap-space-md">
-      <div class="flex items-center gap-space-xs bg-surface-container-low px-space-md py-1 rounded-full border border-outline-variant">
-        <span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
-        <span class="text-label-sm font-label-sm text-on-surface font-semibold">Ready</span>
+    <div class="header-status">
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        <span class="status-text">Ready</span>
       </div>
     </div>
   </header>
 
-  <!-- MAIN TERMINAL SPLIT SCREEN WORKSPACE -->
-  <div class="flex flex-1 overflow-hidden">
+  <!-- Main Terminal Split Screen Workspace -->
+  <div class="pos-workspace">
 
-    <!-- CENTER CATALOG SECTION -->
-    <main class="flex-1 flex flex-col bg-surface overflow-hidden">
+    <!-- Center Catalog Section -->
+    <main class="catalog-section">
 
       <!-- Search Bar -->
-      <div class="p-space-lg bg-surface-container-lowest border-b border-outline-variant flex flex-col gap-space-md shadow-xs shrink-0">
-        <div class="flex items-center gap-space-md">
-          <div class="relative flex-1">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-xl" data-icon="search">search</span>
-            <input class="w-full bg-surface-container-low border border-outline-variant rounded-lg pl-10 pr-12 py-2 text-body-md font-body-md text-on-surface placeholder:text-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all" placeholder="Search items" type="text">
-            <kbd class="absolute right-3 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-xs bg-surface-container-lowest border border-outline-variant rounded text-secondary shadow-xs font-mono">/</kbd>
-          </div>
+      <div class="catalog-search-bar">
+        <div class="search-input-wrapper">
+          <span class="material-symbols-outlined search-icon" data-icon="search">search</span>
+          <input id="search-input" class="search-input" placeholder="Search items" type="text">
+          <kbd class="search-kbd">/</kbd>
         </div>
       </div>
 
-      <!-- Catalog / Product Grid (Scrollable) -->
-      <div class="flex-1 overflow-y-auto p-space-lg custom-scroll">
-        <div class="flex justify-between items-center mb-space-md">
-          <h2 class="text-headline-md font-headline-md text-on-surface">Quick Add Catalog</h2>
-          <span class="text-body-sm font-body-sm text-secondary">Showing 6 Fast-Service Items</span>
+      <!-- Catalog Product Grid -->
+      <div class="catalog-body custom-scroll">
+        <div class="catalog-header">
+          <h2 class="catalog-title">Quick Add Catalog</h2>
+          <span id="catalog-count" class="catalog-count">Showing 6 Fast-Service Items</span>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-space-md">
+        <div id="product-grid" class="product-grid">
 
           <!-- Item 1: Artisanal Espresso -->
-          <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md flex flex-col justify-between hover:border-primary transition-all duration-150 shadow-sm group cursor-pointer active:scale-[0.99]">
-            <div class="relative w-full h-36 rounded-lg overflow-hidden mb-space-sm bg-surface-container-low">
-              <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="images/espresso.jpg" alt="Artisanal Espresso">
-              <span class="absolute top-2 left-2 bg-surface-container-lowest/90 backdrop-blur-xs text-on-surface text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-outline-variant shadow-xs">
-                #ESP-01
-              </span>
+          <article class="product-card">
+            <div class="card-media">
+              <img class="card-image" src="images/espresso.jpg" alt="Artisanal Espresso">
+              <span class="card-badge">#ESP-01</span>
             </div>
-            <div>
-              <div class="flex items-start justify-between gap-2 mb-1">
-                <h3 class="text-body-lg font-body-lg text-on-surface font-semibold group-hover:text-primary transition-colors">Artisanal Espresso</h3>
-                <span class="text-label-lg font-label-lg text-on-surface font-bold whitespace-nowrap">$3.80</span>
+            <div class="card-details">
+              <div class="card-header-row">
+                <h3 class="card-product-name">Artisanal Espresso</h3>
+                <span class="card-price numeric-value">$3.80</span>
               </div>
-              <p class="text-body-sm font-body-sm text-secondary line-clamp-1 mb-space-md">Single origin Colombian roast with rich honey crema notes.</p>
+              <p class="card-description">Single origin Colombian roast with rich honey crema notes.</p>
             </div>
-            <div class="flex items-center justify-between pt-2 border-t border-outline-variant/60">
-              <span class="text-label-sm font-label-sm text-secondary bg-surface-container-low px-2 py-0.5 rounded">Hot / Standard</span>
-              <button class="w-10 h-10 rounded-lg bg-surface-container-low group-hover:bg-primary group-hover:text-on-primary text-primary flex items-center justify-center border border-outline-variant group-hover:border-primary active:scale-[0.92] transition-all" type="button" aria-label="Add Artisanal Espresso">
-                <span class="material-symbols-outlined text-xl" data-icon="add">add</span>
+            <div class="card-footer">
+              <span class="card-category-tag">Hot / Standard</span>
+              <button class="card-add-button" type="button" aria-label="Add Artisanal Espresso">
+                <span class="material-symbols-outlined" data-icon="add">add</span>
               </button>
             </div>
-          </div>
+          </article>
 
           <!-- Item 2: Oat Milk Latte -->
-          <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md flex flex-col justify-between hover:border-primary transition-all duration-150 shadow-sm group cursor-pointer active:scale-[0.99]">
-            <div class="relative w-full h-36 rounded-lg overflow-hidden mb-space-sm bg-surface-container-low">
-              <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="images/latte.jpg" alt="Oat Milk Latte">
-              <span class="absolute top-2 left-2 bg-surface-container-lowest/90 backdrop-blur-xs text-on-surface text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-outline-variant shadow-xs">
-                #LAT-02
-              </span>
+          <article class="product-card">
+            <div class="card-media">
+              <img class="card-image" src="images/latte.jpg" alt="Oat Milk Latte">
+              <span class="card-badge">#LAT-02</span>
             </div>
-            <div>
-              <div class="flex items-start justify-between gap-2 mb-1">
-                <h3 class="text-body-lg font-body-lg text-on-surface font-semibold group-hover:text-primary transition-colors">Oat Milk Latte</h3>
-                <span class="text-label-lg font-label-lg text-on-surface font-bold whitespace-nowrap">$5.20</span>
+            <div class="card-details">
+              <div class="card-header-row">
+                <h3 class="card-product-name">Oat Milk Latte</h3>
+                <span class="card-price numeric-value">$5.20</span>
               </div>
-              <p class="text-body-sm font-body-sm text-secondary line-clamp-1 mb-space-md">Double espresso pulled over velvety steamed organic oat milk.</p>
+              <p class="card-description">Double espresso pulled over velvety steamed organic oat milk.</p>
             </div>
-            <div class="flex items-center justify-between pt-2 border-t border-outline-variant/60">
-              <span class="text-label-sm font-label-sm text-secondary bg-surface-container-low px-2 py-0.5 rounded">Coffee / 12oz</span>
-              <button class="w-10 h-10 rounded-lg bg-surface-container-low group-hover:bg-primary group-hover:text-on-primary text-primary flex items-center justify-center border border-outline-variant group-hover:border-primary active:scale-[0.92] transition-all" type="button" aria-label="Add Oat Milk Latte">
-                <span class="material-symbols-outlined text-xl" data-icon="add">add</span>
+            <div class="card-footer">
+              <span class="card-category-tag">Coffee / 12oz</span>
+              <button class="card-add-button" type="button" aria-label="Add Oat Milk Latte">
+                <span class="material-symbols-outlined" data-icon="add">add</span>
               </button>
             </div>
-          </div>
+          </article>
 
           <!-- Item 3: Butter Croissant -->
-          <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md flex flex-col justify-between hover:border-primary transition-all duration-150 shadow-sm group cursor-pointer active:scale-[0.99]">
-            <div class="relative w-full h-36 rounded-lg overflow-hidden mb-space-sm bg-surface-container-low">
-              <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="images/croissant.jpg" alt="Butter Croissant">
-              <span class="absolute top-2 left-2 bg-surface-container-lowest/90 backdrop-blur-xs text-on-surface text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-outline-variant shadow-xs">
-                #BAK-11
-              </span>
+          <article class="product-card">
+            <div class="card-media">
+              <img class="card-image" src="images/croissant.jpg" alt="Butter Croissant">
+              <span class="card-badge">#BAK-11</span>
             </div>
-            <div>
-              <div class="flex items-start justify-between gap-2 mb-1">
-                <h3 class="text-body-lg font-body-lg text-on-surface font-semibold group-hover:text-primary transition-colors">Butter Croissant</h3>
-                <span class="text-label-lg font-label-lg text-on-surface font-bold whitespace-nowrap">$4.50</span>
+            <div class="card-details">
+              <div class="card-header-row">
+                <h3 class="card-product-name">Butter Croissant</h3>
+                <span class="card-price numeric-value">$4.50</span>
               </div>
-              <p class="text-body-sm font-body-sm text-secondary line-clamp-1 mb-space-md">Hand-laminated European pastry with caramelized crust layers.</p>
+              <p class="card-description">Hand-laminated European pastry with caramelized crust layers.</p>
             </div>
-            <div class="flex items-center justify-between pt-2 border-t border-outline-variant/60">
-              <span class="text-label-sm font-label-sm text-secondary bg-surface-container-low px-2 py-0.5 rounded">Bakery / Fresh</span>
-              <button class="w-10 h-10 rounded-lg bg-surface-container-low group-hover:bg-primary group-hover:text-on-primary text-primary flex items-center justify-center border border-outline-variant group-hover:border-primary active:scale-[0.92] transition-all" type="button" aria-label="Add Butter Croissant">
-                <span class="material-symbols-outlined text-xl" data-icon="add">add</span>
+            <div class="card-footer">
+              <span class="card-category-tag">Bakery / Fresh</span>
+              <button class="card-add-button" type="button" aria-label="Add Butter Croissant">
+                <span class="material-symbols-outlined" data-icon="add">add</span>
               </button>
             </div>
-          </div>
+          </article>
 
           <!-- Item 4: Blueberry Scone -->
-          <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md flex flex-col justify-between hover:border-primary transition-all duration-150 shadow-sm group cursor-pointer active:scale-[0.99]">
-            <div class="relative w-full h-36 rounded-lg overflow-hidden mb-space-sm bg-surface-container-low">
-              <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="images/scone.jpg" alt="Blueberry Scone">
-              <span class="absolute top-2 left-2 bg-surface-container-lowest/90 backdrop-blur-xs text-on-surface text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-outline-variant shadow-xs">
-                #BAK-14
-              </span>
+          <article class="product-card">
+            <div class="card-media">
+              <img class="card-image" src="images/scone.jpg" alt="Blueberry Scone">
+              <span class="card-badge">#BAK-14</span>
             </div>
-            <div>
-              <div class="flex items-start justify-between gap-2 mb-1">
-                <h3 class="text-body-lg font-body-lg text-on-surface font-semibold group-hover:text-primary transition-colors">Blueberry Scone</h3>
-                <span class="text-label-lg font-label-lg text-on-surface font-bold whitespace-nowrap">$4.00</span>
+            <div class="card-details">
+              <div class="card-header-row">
+                <h3 class="card-product-name">Blueberry Scone</h3>
+                <span class="card-price numeric-value">$4.00</span>
               </div>
-              <p class="text-body-sm font-body-sm text-secondary line-clamp-1 mb-space-md">Traditional buttermilk pastry loaded with wild Maine blueberries.</p>
+              <p class="card-description">Traditional buttermilk pastry loaded with wild Maine blueberries.</p>
             </div>
-            <div class="flex items-center justify-between pt-2 border-t border-outline-variant/60">
-              <span class="text-label-sm font-label-sm text-secondary bg-surface-container-low px-2 py-0.5 rounded">Bakery</span>
-              <button class="w-10 h-10 rounded-lg bg-surface-container-low group-hover:bg-primary group-hover:text-on-primary text-primary flex items-center justify-center border border-outline-variant group-hover:border-primary active:scale-[0.92] transition-all" type="button" aria-label="Add Blueberry Scone">
-                <span class="material-symbols-outlined text-xl" data-icon="add">add</span>
+            <div class="card-footer">
+              <span class="card-category-tag">Bakery</span>
+              <button class="card-add-button" type="button" aria-label="Add Blueberry Scone">
+                <span class="material-symbols-outlined" data-icon="add">add</span>
               </button>
             </div>
-          </div>
+          </article>
 
           <!-- Item 5: Avocado Toast -->
-          <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md flex flex-col justify-between hover:border-primary transition-all duration-150 shadow-sm group cursor-pointer active:scale-[0.99]">
-            <div class="relative w-full h-36 rounded-lg overflow-hidden mb-space-sm bg-surface-container-low">
-              <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="images/avocado-toast.jpg" alt="Avocado Toast">
-              <span class="absolute top-2 left-2 bg-surface-container-lowest/90 backdrop-blur-xs text-on-surface text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-outline-variant shadow-xs">
-                #BRU-03
-              </span>
+          <article class="product-card">
+            <div class="card-media">
+              <img class="card-image" src="images/avocado-toast.jpg" alt="Avocado Toast">
+              <span class="card-badge">#BRU-03</span>
             </div>
-            <div>
-              <div class="flex items-start justify-between gap-2 mb-1">
-                <h3 class="text-body-lg font-body-lg text-on-surface font-semibold group-hover:text-primary transition-colors">Avocado Toast</h3>
-                <span class="text-label-lg font-label-lg text-on-surface font-bold whitespace-nowrap">$9.50</span>
+            <div class="card-details">
+              <div class="card-header-row">
+                <h3 class="card-product-name">Avocado Toast</h3>
+                <span class="card-price numeric-value">$9.50</span>
               </div>
-              <p class="text-body-sm font-body-sm text-secondary line-clamp-1 mb-space-md">Smashed Hass avocado, cold pressed olive oil, sea salt on levain.</p>
+              <p class="card-description">Smashed Hass avocado, cold pressed olive oil, sea salt on levain.</p>
             </div>
-            <div class="flex items-center justify-between pt-2 border-t border-outline-variant/60">
-              <span class="text-label-sm font-label-sm text-secondary bg-surface-container-low px-2 py-0.5 rounded">Kitchen / Warm</span>
-              <button class="w-10 h-10 rounded-lg bg-surface-container-low group-hover:bg-primary group-hover:text-on-primary text-primary flex items-center justify-center border border-outline-variant group-hover:border-primary active:scale-[0.92] transition-all" type="button" aria-label="Add Avocado Toast">
-                <span class="material-symbols-outlined text-xl" data-icon="add">add</span>
+            <div class="card-footer">
+              <span class="card-category-tag">Kitchen / Warm</span>
+              <button class="card-add-button" type="button" aria-label="Add Avocado Toast">
+                <span class="material-symbols-outlined" data-icon="add">add</span>
               </button>
             </div>
-          </div>
+          </article>
 
           <!-- Item 6: Matcha Green Cooler -->
-          <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md flex flex-col justify-between hover:border-primary transition-all duration-150 shadow-sm group cursor-pointer active:scale-[0.99]">
-            <div class="relative w-full h-36 rounded-lg overflow-hidden mb-space-sm bg-surface-container-low">
-              <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="images/matcha.jpg" alt="Matcha Green Cooler">
-              <span class="absolute top-2 left-2 bg-surface-container-lowest/90 backdrop-blur-xs text-on-surface text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-outline-variant shadow-xs">
-                #DRK-08
-              </span>
+          <article class="product-card">
+            <div class="card-media">
+              <img class="card-image" src="images/matcha.jpg" alt="Matcha Green Cooler">
+              <span class="card-badge">#DRK-08</span>
             </div>
-            <div>
-              <div class="flex items-start justify-between gap-2 mb-1">
-                <h3 class="text-body-lg font-body-lg text-on-surface font-semibold group-hover:text-primary transition-colors">Matcha Green Cooler</h3>
-                <span class="text-label-lg font-label-lg text-on-surface font-bold whitespace-nowrap">$6.00</span>
+            <div class="card-details">
+              <div class="card-header-row">
+                <h3 class="card-product-name">Matcha Green Cooler</h3>
+                <span class="card-price numeric-value">$6.00</span>
               </div>
-              <p class="text-body-sm font-body-sm text-secondary line-clamp-1 mb-space-md">Ceremonial grade Uji matcha, sparkling water, mint &amp; lime spritz.</p>
+              <p class="card-description">Ceremonial grade Uji matcha, sparkling water, mint &amp; lime spritz.</p>
             </div>
-            <div class="flex items-center justify-between pt-2 border-t border-outline-variant/60">
-              <span class="text-label-sm font-label-sm text-secondary bg-surface-container-low px-2 py-0.5 rounded">Cold Drinks</span>
-              <button class="w-10 h-10 rounded-lg bg-surface-container-low group-hover:bg-primary group-hover:text-on-primary text-primary flex items-center justify-center border border-outline-variant group-hover:border-primary active:scale-[0.92] transition-all" type="button" aria-label="Add Matcha Green Cooler">
-                <span class="material-symbols-outlined text-xl" data-icon="add">add</span>
+            <div class="card-footer">
+              <span class="card-category-tag">Cold Drinks</span>
+              <button class="card-add-button" type="button" aria-label="Add Matcha Green Cooler">
+                <span class="material-symbols-outlined" data-icon="add">add</span>
               </button>
             </div>
-          </div>
+          </article>
 
         </div>
       </div>
     </main>
 
-    <!-- RIGHT FIXED CHECKOUT CART PANEL (384px Desktop) -->
-    <aside class="w-96 bg-surface-container-lowest border-l border-outline-variant flex flex-col justify-between shrink-0 shadow-lg z-20">
+    <!-- Right Fixed Checkout Cart Panel -->
+    <aside class="cart-panel">
 
       <!-- Cart Header & Order Meta -->
-      <div class="p-space-md border-b border-outline-variant bg-surface-container-low">
-        <div class="flex items-center justify-between mb-1">
-          <div class="flex items-center gap-2">
-            <span class="px-2 py-0.5 bg-primary text-on-primary rounded text-label-md font-label-md font-bold">Order #1042</span>
-          </div>
-          <button class="p-1 rounded text-secondary hover:text-error hover:bg-error-container transition-colors" title="Void / Clear Order" type="button" aria-label="Clear Order">
-            <span class="material-symbols-outlined text-xl" data-icon="delete_sweep">delete_sweep</span>
-          </button>
+      <div class="cart-header">
+        <div class="order-badge-container">
+          <span id="order-badge" class="order-badge">Order #1</span>
         </div>
+        <button id="btn-clear-cart" class="btn-clear-cart" title="Void / Clear Order" type="button" aria-label="Clear Order">
+          <span class="material-symbols-outlined" data-icon="delete_sweep">delete_sweep</span>
+        </button>
       </div>
 
       <!-- Scrollable Line Items List -->
-      <div class="flex-1 overflow-y-auto divide-y divide-outline-variant/40 px-space-md py-space-sm custom-scroll">
-
-        <!-- Cart Line Item 1: Oat Milk Latte -->
-        <div class="py-space-sm flex flex-col gap-1">
-          <div class="flex items-start justify-between">
-            <div class="flex-1 pr-2">
-              <div class="flex items-center gap-1.5">
-                <h4 class="text-body-md font-body-md font-semibold text-on-surface">Oat Milk Latte</h4>
-                <span class="text-body-sm font-body-sm text-secondary">(12oz)</span>
-              </div>
-              <ul class="text-body-sm font-body-sm text-secondary pl-2 space-y-0.5 mt-0.5">
-                <li>• Oat Milk substitute <span class="text-primary font-semibold">+$0.75</span></li>
-                <li>• Extra shot <span class="text-primary font-semibold">+$0.75</span></li>
-                <li>• Hot / Steamed 140°F</li>
-              </ul>
-            </div>
-            <span class="text-label-lg font-label-lg font-bold text-on-surface whitespace-nowrap">$6.70</span>
-          </div>
-          <!-- Stepper & Actions -->
-          <div class="flex items-center justify-between pt-1">
-            <div class="flex items-center border border-outline-variant rounded-lg bg-surface-container-low h-8">
-              <button class="w-7 h-full flex items-center justify-center text-on-surface hover:bg-surface-container rounded-l-lg transition-colors" type="button" aria-label="Decrease quantity">
-                <span class="material-symbols-outlined text-base" data-icon="remove">remove</span>
-              </button>
-              <span class="w-8 text-center text-label-md font-label-md font-bold text-on-surface font-numeric-keypad">1</span>
-              <button class="w-7 h-full flex items-center justify-center text-on-surface hover:bg-surface-container rounded-r-lg transition-colors" type="button" aria-label="Increase quantity">
-                <span class="material-symbols-outlined text-base" data-icon="add">add</span>
-              </button>
-            </div>
-            <div class="flex items-center gap-2">
-              <button class="text-body-sm font-body-sm text-secondary hover:text-error transition-colors" type="button">Remove</button>
-            </div>
-          </div>
+      <div id="cart-items-list" class="cart-items-list custom-scroll">
+        <div class="empty-cart-message">
+          <span class="material-symbols-outlined">shopping_cart</span>
+          <p>No items in current order</p>
         </div>
-
-        <!-- Cart Line Item 2: Avocado Toast -->
-        <div class="py-space-sm flex flex-col gap-1">
-          <div class="flex items-start justify-between">
-            <div class="flex-1 pr-2">
-              <div class="flex items-center gap-1.5">
-                <h4 class="text-body-md font-body-md font-semibold text-on-surface">Avocado Toast</h4>
-              </div>
-              <ul class="text-body-sm font-body-sm text-secondary pl-2 space-y-0.5 mt-0.5">
-                <li>• Add poached egg <span class="text-primary font-semibold">+$1.50</span></li>
-                <li>• No chili flakes (Kitchen note)</li>
-              </ul>
-            </div>
-            <span class="text-label-lg font-label-lg font-bold text-on-surface whitespace-nowrap">$11.00</span>
-          </div>
-          <!-- Stepper & Actions -->
-          <div class="flex items-center justify-between pt-1">
-            <div class="flex items-center border border-outline-variant rounded-lg bg-surface-container-low h-8">
-              <button class="w-7 h-full flex items-center justify-center text-on-surface hover:bg-surface-container rounded-l-lg transition-colors" type="button" aria-label="Decrease quantity">
-                <span class="material-symbols-outlined text-base" data-icon="remove">remove</span>
-              </button>
-              <span class="w-8 text-center text-label-md font-label-md font-bold text-on-surface font-numeric-keypad">1</span>
-              <button class="w-7 h-full flex items-center justify-center text-on-surface hover:bg-surface-container rounded-r-lg transition-colors" type="button" aria-label="Increase quantity">
-                <span class="material-symbols-outlined text-base" data-icon="add">add</span>
-              </button>
-            </div>
-            <div class="flex items-center gap-2">
-              <button class="text-body-sm font-body-sm text-secondary hover:text-error transition-colors" type="button">Remove</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Cart Line Item 3: Butter Croissant -->
-        <div class="py-space-sm flex flex-col gap-1">
-          <div class="flex items-start justify-between">
-            <div class="flex-1 pr-2">
-              <div class="flex items-center gap-1.5">
-                <h4 class="text-body-md font-body-md font-semibold text-on-surface">Butter Croissant</h4>
-              </div>
-              <ul class="text-body-sm font-body-sm text-secondary pl-2 space-y-0.5 mt-0.5">
-                <li>• Warmed lightly</li>
-              </ul>
-            </div>
-            <span class="text-label-lg font-label-lg font-bold text-on-surface whitespace-nowrap">$4.50</span>
-          </div>
-          <!-- Stepper & Actions -->
-          <div class="flex items-center justify-between pt-1">
-            <div class="flex items-center border border-outline-variant rounded-lg bg-surface-container-low h-8">
-              <button class="w-7 h-full flex items-center justify-center text-on-surface hover:bg-surface-container rounded-l-lg transition-colors" type="button" aria-label="Decrease quantity">
-                <span class="material-symbols-outlined text-base" data-icon="remove">remove</span>
-              </button>
-              <span class="w-8 text-center text-label-md font-label-md font-bold text-on-surface font-numeric-keypad">1</span>
-              <button class="w-7 h-full flex items-center justify-center text-on-surface hover:bg-surface-container rounded-r-lg transition-colors" type="button" aria-label="Increase quantity">
-                <span class="material-symbols-outlined text-base" data-icon="add">add</span>
-              </button>
-            </div>
-            <div class="flex items-center gap-2">
-              <button class="text-body-sm font-body-sm text-secondary hover:text-error transition-colors" type="button">Remove</button>
-            </div>
-          </div>
-        </div>
-
       </div>
 
       <!-- Bill Breakdown & Summary -->
-      <div class="p-space-md bg-surface-container-lowest border-t border-outline-variant space-y-1.5">
-        <div class="flex justify-between text-body-md font-body-md text-secondary">
-          <span>Subtotal (3 items)</span>
-          <span class="font-medium text-on-surface font-numeric-keypad">$19.95</span>
-        </div>
-        <div class="flex justify-between text-body-md font-body-md text-secondary">
-          <span>Sales Tax (8.5%)</span>
-          <span class="font-medium text-on-surface font-numeric-keypad">$1.70</span>
+      <div class="cart-summary">
+        <div class="summary-row">
+          <span id="subtotal-label">Subtotal (0 items)</span>
+          <span id="subtotal-value" class="summary-value numeric-value">$0.00</span>
         </div>
 
-        <div class="pt-2 border-t border-outline-variant flex justify-between items-baseline">
+        <div class="summary-divider">
           <div>
-            <span class="text-headline-md font-headline-md text-on-surface font-bold">Total Due</span>
-            <span class="block text-body-sm font-body-sm text-secondary">Includes all local taxes</span>
+            <span class="total-label">Total Due</span>
           </div>
-          <span class="text-numeric-total font-numeric-total text-on-surface font-bold">$19.65</span>
+          <span id="total-amount" class="total-amount numeric-value">$0.00</span>
         </div>
       </div>
 
-      <!-- Primary Pay CTA -->
-      <div class="p-space-md bg-surface-container-low border-t border-outline-variant flex flex-col gap-space-sm">
-        <button class="w-full h-14 bg-primary hover:bg-primary-container text-on-primary rounded-xl font-bold flex items-center justify-between px-space-xl active:scale-[0.98] transition-all duration-100 shadow-md" type="button">
-          <div class="flex items-center gap-space-sm">
-            <span class="material-symbols-outlined text-2xl" data-icon="check_circle">check_circle</span>
-            <span class="text-label-lg font-label-lg text-lg">Charge Order</span>
+      <!-- Primary Pay Action CTA -->
+      <div class="cart-checkout-action">
+        <button id="btn-charge-order" class="btn-charge-order" type="button">
+          <div class="charge-left">
+            <span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+            <span class="charge-label">Charge Order</span>
           </div>
-          <span class="text-numeric-keypad font-numeric-keypad tracking-tight">$19.65 →</span>
+          <span id="charge-amount" class="charge-amount numeric-value">$0.00 →</span>
         </button>
       </div>
 
     </aside>
+  </div>
+
+  <!-- Receipt Modal Dialog -->
+  <div id="receipt-modal" class="modal-overlay hidden">
+    <div class="receipt-card">
+      <div class="receipt-header">
+        <h3 class="receipt-brand">Artisan Roast &amp; Bakery</h3>
+        <p class="receipt-location">POS Station 01 • Main Bistro</p>
+        <div class="receipt-divider-dashed"></div>
+        <div class="receipt-meta-row">
+          <span id="receipt-order-num">Order #1</span>
+          <span id="receipt-datetime">Oct 30, 2026, 10:35 AM</span>
+        </div>
+        <div class="receipt-divider-dashed"></div>
+      </div>
+
+      <!-- Receipt Items -->
+      <div id="receipt-items-list" class="receipt-items-list">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="receipt-divider-dashed"></div>
+
+      <!-- Receipt Financial Summary -->
+      <div class="receipt-summary">
+        <div class="receipt-row">
+          <span id="receipt-items-count">Total Items (0)</span>
+          <span id="receipt-subtotal" class="numeric-value">$0.00</span>
+        </div>
+        <div class="receipt-row receipt-total-row">
+          <span>TOTAL DUE</span>
+          <span id="receipt-total" class="numeric-value">$0.00</span>
+        </div>
+      </div>
+
+      <div class="receipt-divider-dashed"></div>
+
+      <!-- Receipt Footer -->
+      <div class="receipt-footer">
+        <p class="receipt-status">PAID • TRANSACTION APPROVED</p>
+        <p class="receipt-thanks">Thank you for visiting us!</p>
+      </div>
+
+      <!-- Modal Action Buttons -->
+      <div class="receipt-actions">
+        <button id="btn-close-receipt" class="btn-receipt-close" type="button">
+          Next Order
+        </button>
+      </div>
+    </div>
   </div>
 
 </body>
