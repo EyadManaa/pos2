@@ -325,9 +325,17 @@ function renderCart() {
               '<h4 class="cart-item-name">' + item.name + '</h4>' +
               specHtml +
             '</div>' +
+            '<div class="cart-item-meta">' +
+              '<span class="cart-item-unit-price">Unit Price: ' + formatCurrency(item.price) + '</span>' +
+              '<span class="cart-item-meta-divider">•</span>' +
+              '<span class="cart-item-quantity-text">Quantity: ' + item.quantity + '</span>' +
+            '</div>' +
             modifiersHtml +
           '</div>' +
-          '<span class="cart-item-price numeric-value">' + formatCurrency(itemTotal) + '</span>' +
+          '<div class="cart-item-price-col">' +
+            '<span class="cart-item-total-label">Total</span>' +
+            '<span class="cart-item-price numeric-value">' + formatCurrency(itemTotal) + '</span>' +
+          '</div>' +
         '</div>' +
         '<div class="cart-item-actions">' +
           '<div class="quantity-stepper">' +
@@ -557,7 +565,10 @@ function showReceipt(orderNumber, itemsList, totalAmount) {
             '<span class="receipt-item-quantity">' + item.quantity + 'x</span>' +
             '<span class="receipt-item-name">' + item.name + specText + '</span>' +
           '</div>' +
-          '<span class="receipt-item-total numeric-value">' + formatCurrency(itemTotal) + '</span>' +
+          '<div class="receipt-item-pricing">' +
+            '<span class="receipt-item-unit-price">(' + formatCurrency(item.price) + ' ea)</span>' +
+            '<span class="receipt-item-total numeric-value">' + formatCurrency(itemTotal) + '</span>' +
+          '</div>' +
         '</div>' +
         modsHtml +
       '</div>';
