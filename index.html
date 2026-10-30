@@ -31,6 +31,11 @@
       </div>
     </div>
     <div class="header-status">
+      <button id="btn-open-history" class="btn-header-action" type="button" aria-label="View Sales History">
+        <span class="material-symbols-outlined">receipt_long</span>
+        <span>Sales History</span>
+        <span id="history-badge" class="history-badge">0</span>
+      </button>
       <div class="status-badge">
         <span class="status-dot"></span>
         <span class="status-text">Ready</span>
@@ -44,12 +49,27 @@
     <!-- Center Catalog Section -->
     <main class="catalog-section">
 
-      <!-- Search Bar -->
-      <div class="catalog-search-bar">
+      <!-- Search & Category Controls Bar -->
+      <div class="catalog-controls-bar">
         <div class="search-input-wrapper">
           <span class="material-symbols-outlined search-icon" data-icon="search">search</span>
-          <input id="search-input" class="search-input" placeholder="Search items" type="text">
+          <input id="search-input" class="search-input" placeholder="Search products by name..." type="text">
           <kbd class="search-kbd">/</kbd>
+        </div>
+
+        <div class="filter-actions-row">
+          <div class="category-pills" id="category-pills">
+            <button type="button" class="category-pill active" data-category="all">All</button>
+            <button type="button" class="category-pill" data-category="Coffee">Coffee</button>
+            <button type="button" class="category-pill" data-category="Bakery">Bakery</button>
+            <button type="button" class="category-pill" data-category="Food">Food</button>
+            <button type="button" class="category-pill" data-category="Drinks">Drinks</button>
+            <button type="button" class="category-pill" data-category="Custom">Custom</button>
+          </div>
+          <button type="button" id="btn-open-custom-product" class="btn-custom-product">
+            <span class="material-symbols-outlined">add_circle</span>
+            <span>+ Custom Item</span>
+          </button>
         </div>
       </div>
 
@@ -220,11 +240,39 @@
           <span id="subtotal-value" class="summary-value numeric-value">$0.00</span>
         </div>
 
+        <!-- 10% Discount when subtotal exceeds $100 (Feature 3) -->
+        <div id="discount-row" class="summary-row discount-row hidden">
+          <span class="discount-label">Bulk Discount (10% over $100)</span>
+          <span id="discount-value" class="summary-value discount-value numeric-value">-$0.00</span>
+        </div>
+
         <div class="summary-divider">
           <div>
             <span class="total-label">Total Due</span>
           </div>
           <span id="total-amount" class="total-amount numeric-value">$0.00</span>
+        </div>
+
+        <!-- Cash Payment & Change Calculation (Feature 4) -->
+        <div class="payment-calc-section">
+          <div class="payment-row">
+            <label for="amount-paid-input" class="payment-label">Amount Paid</label>
+            <div class="payment-input-group">
+              <span class="currency-prefix">$</span>
+              <input type="number" id="amount-paid-input" class="payment-input" placeholder="0.00" min="0" step="0.01">
+            </div>
+          </div>
+          <div class="quick-cash-group">
+            <button type="button" class="quick-cash-btn" data-action="exact">Exact</button>
+            <button type="button" class="quick-cash-btn" data-value="10">$10</button>
+            <button type="button" class="quick-cash-btn" data-value="20">$20</button>
+            <button type="button" class="quick-cash-btn" data-value="50">$50</button>
+            <button type="button" class="quick-cash-btn" data-value="100">$100</button>
+          </div>
+          <div class="change-row">
+            <span class="change-label">Change Due:</span>
+            <span id="change-display" class="change-display numeric-value">$0.00</span>
+          </div>
         </div>
       </div>
 
@@ -269,11 +317,122 @@
           <span id="receipt-items-count">Total Items (0)</span>
           <span id="receipt-subtotal" class="numeric-value">$0.00</span>
         </div>
+        <div id="receipt-discount-row" class="receipt-row receipt-discount-row hidden">
+          <span>Bulk Discount (10%)</span>
+          <span id="receipt-discount" class="numeric-value">-$0.00</span>
+        </div>
         <div class="receipt-row receipt-total-row">
           <span>TOTAL DUE</span>
           <span id="receipt-total" class="numeric-value">$0.00</span>
         </div>
+        <div class="receipt-row">
+          <span>Amount Paid</span>
+          <span id="receipt-amount-paid" class="numeric-value">$0.00</span>
+        </div>
+        <div class="receipt-row">
+          <span>Change Returned</span>
+          <span id="receipt-change" class="numeric-value">$0.00</span>
+        </div>
       </div>
+
+      <div class="receipt-divider-dashed"></div>
+
+      <!-- Receipt Footer -->
+      <div class="receipt-footer">
+        <p class="receipt-status">PAID • TRANSACTION APPROVED</p>
+        <p class="receipt-thanks">Thank you for visiting us!</p>
+      </div>
+
+      <!-- Modal Action Buttons -->
+      <div class="receipt-actions">
+        <button id="btn-close-receipt" class="btn-receipt-close" type="button">
+          Next Order
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Product Modal (Feature 6) -->
+  <div id="custom-product-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="material-symbols-outlined">add_circle</span>
+          <h3 class="modal-title">Add Custom Product</h3>
+        </div>
+        <button id="btn-close-custom-modal" class="btn-modal-close" type="button" aria-label="Close modal">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <form id="custom-product-form" class="modal-form">
+        <div class="form-group">
+          <label for="custom-name-input" class="form-label">Product Name *</label>
+          <input type="text" id="custom-name-input" class="form-input" placeholder="e.g. Gluten-Free Bagel" required>
+        </div>
+        <div class="form-group">
+          <label for="custom-price-input" class="form-label">Price ($) *</label>
+          <input type="number" id="custom-price-input" class="form-input" placeholder="0.00" min="0.01" step="0.01" required>
+        </div>
+        <div class="form-group">
+          <label for="custom-category-select" class="form-label">Category</label>
+          <select id="custom-category-select" class="form-select">
+            <option value="Bakery">Bakery</option>
+            <option value="Coffee">Coffee</option>
+            <option value="Food">Food</option>
+            <option value="Drinks">Drinks</option>
+            <option value="Custom" selected>Custom</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="button" id="btn-cancel-custom" class="btn-secondary">Cancel</button>
+          <button type="submit" id="btn-save-custom" class="btn-primary">Add to Order &amp; Catalog</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Session Sales History Modal (Feature 8) -->
+  <div id="sales-history-modal" class="modal-overlay hidden">
+    <div class="modal-card modal-large">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="material-symbols-outlined">receipt_long</span>
+          <div>
+            <h3 class="modal-title">Session Sales History</h3>
+            <p class="modal-subtitle">Completed transactions in this register session</p>
+          </div>
+        </div>
+        <button id="btn-close-history-modal" class="btn-modal-close" type="button" aria-label="Close modal">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- History KPI Metrics -->
+      <div class="history-metrics-row">
+        <div class="history-metric-card">
+          <span class="metric-label">Completed Orders</span>
+          <span id="metric-order-count" class="metric-value">0</span>
+        </div>
+        <div class="history-metric-card">
+          <span class="metric-label">Total Revenue</span>
+          <span id="metric-total-revenue" class="metric-value">$0.00</span>
+        </div>
+        <div class="history-metric-card">
+          <span class="metric-label">Average Order</span>
+          <span id="metric-avg-order" class="metric-value">$0.00</span>
+        </div>
+      </div>
+
+      <!-- History Transactions List -->
+      <div id="sales-history-list" class="sales-history-list custom-scroll">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" id="btn-history-dismiss" class="btn-secondary">Close History</button>
+      </div>
+    </div>
+  </div>
 
       <div class="receipt-divider-dashed"></div>
 

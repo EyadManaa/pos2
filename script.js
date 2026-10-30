@@ -17,6 +17,7 @@ const products = [
     name: 'Artisanal Espresso',
     price: 3.80,
     cartPrice: 3.80,
+    category: 'Coffee',
     description: 'Single origin Colombian roast with rich honey crema notes.',
     tag: 'Hot / Standard',
     image: 'images/espresso.jpg',
@@ -29,6 +30,7 @@ const products = [
     name: 'Oat Milk Latte',
     price: 5.20,
     cartPrice: 6.70,
+    category: 'Coffee',
     description: 'Double espresso pulled over velvety steamed organic oat milk.',
     tag: 'Coffee / 12oz',
     image: 'images/latte.jpg',
@@ -45,6 +47,7 @@ const products = [
     name: 'Butter Croissant',
     price: 4.50,
     cartPrice: 4.50,
+    category: 'Bakery',
     description: 'Hand-laminated European pastry with caramelized crust layers.',
     tag: 'Bakery / Fresh',
     image: 'images/croissant.jpg',
@@ -59,6 +62,7 @@ const products = [
     name: 'Blueberry Scone',
     price: 4.00,
     cartPrice: 4.00,
+    category: 'Bakery',
     description: 'Traditional buttermilk pastry loaded with wild Maine blueberries.',
     tag: 'Bakery',
     image: 'images/scone.jpg',
@@ -71,6 +75,7 @@ const products = [
     name: 'Avocado Toast',
     price: 9.50,
     cartPrice: 11.00,
+    category: 'Food',
     description: 'Smashed Hass avocado, cold pressed olive oil, sea salt on levain.',
     tag: 'Kitchen / Warm',
     image: 'images/avocado-toast.jpg',
@@ -86,6 +91,7 @@ const products = [
     name: 'Matcha Green Cooler',
     price: 6.00,
     cartPrice: 6.00,
+    category: 'Drinks',
     description: 'Ceremonial grade Uji matcha, sparkling water, mint & lime spritz.',
     tag: 'Cold Drinks',
     image: 'images/matcha.jpg',
@@ -97,8 +103,20 @@ const products = [
 // Current Active Order Cart (Array of Objects) - Starts empty
 let cart = [];
 
-// Order Number Counter - Starts from 1 and increments gradually with each order
+// Order Number Counter - Starts from 1 and increments sequentially with each order
 let currentOrderNumber = 1;
+
+// Current Active Category Filter (Feature 2)
+let currentCategoryFilter = 'all';
+
+// Current Search Query (Feature 1)
+let currentSearchQuery = '';
+
+// Cash Tendered / Amount Paid (Feature 4)
+let currentAmountPaid = 0;
+
+// Sales History Array (Feature 8) - Stores completed transactions during the session
+let salesHistory = [];
 
 
 // ==========================================================================
@@ -115,7 +133,7 @@ function formatCurrency(amount) {
 }
 
 /**
- * Format the current date and time for the receipt.
+ * Format the current date and time for the receipt (Feature 7).
  * Uses conditions, Date object methods, and string concatenation.
  * @returns {string}
  */
@@ -154,12 +172,38 @@ function calculateSubtotal(items) {
 }
 
 /**
- * Calculate grand total.
+ * Calculate 10% discount when subtotal exceeds $100 (Feature 3).
  * @param {number} subtotal
  * @returns {number}
  */
-function calculateTotal(subtotal) {
-  return subtotal;
+function calculateDiscount(subtotal) {
+  if (subtotal > 100) {
+    return subtotal * 0.10;
+  }
+  return 0;
+}
+
+/**
+ * Calculate grand total by subtracting discount from subtotal.
+ * @param {number} subtotal
+ * @param {number} discount
+ * @returns {number}
+ */
+function calculateTotal(subtotal, discount) {
+  return subtotal - discount;
+}
+
+/**
+ * Calculate change due based on amount paid and order total (Feature 4).
+ * @param {number} amountPaid
+ * @param {number} total
+ * @returns {number}
+ */
+function calculateChange(amountPaid, total) {
+  if (amountPaid > total) {
+    return amountPaid - total;
+  }
+  return 0;
 }
 
 /**
@@ -226,9 +270,9 @@ function renderProducts(productList) {
     catalogCount.textContent = 'Showing ' + productList.length + ' Fast-Service Items';
   }
 
-  // Handle empty search results
+  // Handle empty catalog or filter results
   if (productList.length === 0) {
-    productGrid.innerHTML = '<div class="empty-catalog-message">No items found matching your search.</div>';
+    productGrid.innerHTML = '<div class="empty-catalog-message">No products found matching your filter criteria.</div>';
     return;
   }
 
@@ -273,7 +317,7 @@ function renderProducts(productList) {
 
 /**
  * Render the itemized receipt list in the cart sidebar.
- * Uses loops, conditions, and DOM manipulation.
+ * Displays name, unit price, quantity, and total price for each item.
  */
 function renderCart() {
   const cartList = document.getElementById('cart-items-list');
@@ -386,28 +430,82 @@ function renderCart() {
 }
 
 /**
- * Update the financial summary display (subtotal, total, badges).
+ * Update change calculation and visual cues (Feature 4).
+ */
+function updateChangeCalculation() {
+  const subtotal = calculateSubtotal(cart);
+  const discount = calculateDiscount(subtotal);
+  const total = calculateTotal(subtotal, discount);
+
+  const amountPaidInput = document.getElementById('amount-paid-input');
+  const changeDisplay = document.getElementById('change-display');
+
+  if (!amountPaidInput || !changeDisplay) {
+    return;
+  }
+
+  const rawValue = amountPaidInput.value.trim();
+
+  if (rawValue === '') {
+    changeDisplay.textContent = '$0.00';
+    changeDisplay.classList.remove('due-short');
+    currentAmountPaid = 0;
+    return;
+  }
+
+  let paid = parseFloat(rawValue);
+  if (isNaN(paid) || paid < 0) {
+    paid = 0;
+  }
+
+  currentAmountPaid = paid;
+
+  if (paid >= total) {
+    const change = calculateChange(paid, total);
+    changeDisplay.textContent = formatCurrency(change);
+    changeDisplay.classList.remove('due-short');
+  } else {
+    const shortAmount = total - paid;
+    changeDisplay.textContent = 'Due: ' + formatCurrency(shortAmount);
+    changeDisplay.classList.add('due-short');
+  }
+}
+
+/**
+ * Update the financial summary display (subtotal, discount, total, badges).
  * Uses DOM selection via querySelector and getElementById, and textContent.
  */
 function updateSummary() {
   const subtotal = calculateSubtotal(cart);
-  const total = calculateTotal(subtotal);
+  const discount = calculateDiscount(subtotal); // Feature 3: 10% discount when subtotal > $100
+  const total = calculateTotal(subtotal, discount);
   const totalItems = countTotalItems(cart);
 
-  // DOM Selection using both getElementById and querySelector
   const subtotalLabel = document.getElementById('subtotal-label');
   const subtotalValue = document.getElementById('subtotal-value');
+  const discountRow = document.getElementById('discount-row');
+  const discountValue = document.getElementById('discount-value');
   const totalAmount = document.getElementById('total-amount');
   const chargeAmount = document.getElementById('charge-amount');
   const orderBadge = document.querySelector('#order-badge');
 
-  // DOM manipulation using textContent
   if (subtotalLabel) {
     subtotalLabel.textContent = 'Subtotal (' + totalItems + ' items)';
   }
   if (subtotalValue) {
     subtotalValue.textContent = formatCurrency(subtotal);
   }
+
+  // Feature 3: Display 10% discount if subtotal > $100
+  if (discountRow && discountValue) {
+    if (discount > 0) {
+      discountRow.classList.remove('hidden');
+      discountValue.textContent = '-' + formatCurrency(discount);
+    } else {
+      discountRow.classList.add('hidden');
+    }
+  }
+
   if (totalAmount) {
     totalAmount.textContent = formatCurrency(total);
   }
@@ -421,6 +519,9 @@ function updateSummary() {
       orderBadge.textContent = 'Order #' + currentOrderNumber;
     }
   }
+
+  // Update change calculation
+  updateChangeCalculation();
 }
 
 
@@ -494,7 +595,7 @@ function removeFromCart(productId) {
 }
 
 /**
- * Clear/void all items from the current order after confirmation.
+ * Clear/cancel all items from current order with a confirmation prompt (Feature 5).
  */
 function clearCart() {
   if (cart.length === 0) {
@@ -502,9 +603,15 @@ function clearCart() {
     return;
   }
 
-  const confirmed = confirm('Are you sure you want to void / clear this order?');
+  // Feature 5: Display a confirmation message before canceling an order
+  const confirmed = confirm('Are you sure you want to cancel / void this order? All items will be removed.');
   if (confirmed) {
     cart = [];
+    currentAmountPaid = 0;
+    const amountPaidInput = document.getElementById('amount-paid-input');
+    if (amountPaidInput) {
+      amountPaidInput.value = '';
+    }
     renderCart();
     updateSummary();
   }
@@ -512,25 +619,33 @@ function clearCart() {
 
 /**
  * Display the completed order receipt in the modal dialog.
- * Uses DOM selection, innerHTML, textContent, conditions, and loops.
+ * Shows order number, date/time, items, subtotal, discount, total, amount paid, and change (Features 3, 4, 7).
  * @param {number} orderNumber
  * @param {Array} itemsList
- * @param {number} totalAmount
+ * @param {number} subtotal
+ * @param {number} discount
+ * @param {number} total
+ * @param {number} amountPaid
+ * @param {number} change
  */
-function showReceipt(orderNumber, itemsList, totalAmount) {
+function showReceipt(orderNumber, itemsList, subtotal, discount, total, amountPaid, change) {
   const modal = document.getElementById('receipt-modal');
   const orderNumElem = document.getElementById('receipt-order-num');
   const datetimeElem = document.getElementById('receipt-datetime');
   const itemsContainer = document.getElementById('receipt-items-list');
   const itemsCountElem = document.getElementById('receipt-items-count');
   const subtotalElem = document.getElementById('receipt-subtotal');
+  const discountRow = document.getElementById('receipt-discount-row');
+  const discountElem = document.getElementById('receipt-discount');
   const totalElem = document.getElementById('receipt-total');
+  const paidElem = document.getElementById('receipt-amount-paid');
+  const changeElem = document.getElementById('receipt-change');
 
   if (!modal) {
     return;
   }
 
-  // Update receipt order number and current date/time
+  // Feature 7: Display current date and time on receipt
   if (orderNumElem) {
     orderNumElem.textContent = 'Order #' + orderNumber;
   }
@@ -584,10 +699,29 @@ function showReceipt(orderNumber, itemsList, totalAmount) {
     itemsCountElem.textContent = 'Total Items (' + totalItems + ')';
   }
   if (subtotalElem) {
-    subtotalElem.textContent = formatCurrency(totalAmount);
+    subtotalElem.textContent = formatCurrency(subtotal);
   }
+
+  // Feature 3: Display discount on receipt if applicable
+  if (discountRow && discountElem) {
+    if (discount > 0) {
+      discountRow.classList.remove('hidden');
+      discountElem.textContent = '-' + formatCurrency(discount);
+    } else {
+      discountRow.classList.add('hidden');
+    }
+  }
+
   if (totalElem) {
-    totalElem.textContent = formatCurrency(totalAmount);
+    totalElem.textContent = formatCurrency(total);
+  }
+
+  // Feature 4: Display amount paid and change on receipt
+  if (paidElem) {
+    paidElem.textContent = formatCurrency(amountPaid);
+  }
+  if (changeElem) {
+    changeElem.textContent = formatCurrency(change);
   }
 
   // Display the receipt modal
@@ -603,17 +737,28 @@ function closeReceiptModal() {
     modal.classList.add('hidden');
   }
 
-  // Increment order number sequentially (1, 2, 3...)
+  // Increment order number sequentially (1 -> 2 -> 3 etc.)
   currentOrderNumber = currentOrderNumber + 1;
 
   // Clear current cart and reset terminal
   cart = [];
+  currentAmountPaid = 0;
+  const amountPaidInput = document.getElementById('amount-paid-input');
+  if (amountPaidInput) {
+    amountPaidInput.value = '';
+  }
+  const changeDisplay = document.getElementById('change-display');
+  if (changeDisplay) {
+    changeDisplay.textContent = '$0.00';
+    changeDisplay.classList.remove('due-short');
+  }
+
   renderCart();
   updateSummary();
 }
 
 /**
- * Complete and charge the current order, opening the receipt modal.
+ * Complete and charge current order, validating cash payment and recording to sales history (Features 3, 4, 7, 8).
  */
 function processCheckout() {
   if (cart.length === 0) {
@@ -621,39 +766,81 @@ function processCheckout() {
     return;
   }
 
-  const total = calculateTotal(calculateSubtotal(cart));
+  const subtotal = calculateSubtotal(cart);
+  const discount = calculateDiscount(subtotal);
+  const total = calculateTotal(subtotal, discount);
+
+  const amountPaidInput = document.getElementById('amount-paid-input');
+  let amountPaid = total; // default to exact payment if cashier left input empty
+
+  if (amountPaidInput && amountPaidInput.value.trim() !== '') {
+    const parsed = parseFloat(amountPaidInput.value);
+    if (!isNaN(parsed) && parsed > 0) {
+      amountPaid = parsed;
+    }
+  }
+
+  // Feature 4: Validate customer amount paid covers total
+  if (amountPaid < total) {
+    alert('Insufficient payment: The customer provided ' + formatCurrency(amountPaid) + ' but the total due is ' + formatCurrency(total) + '.');
+    return;
+  }
+
+  const change = calculateChange(amountPaid, total);
 
   // Copy current cart items for the receipt using a loop
   const purchasedItems = [];
   for (let i = 0; i < cart.length; i++) {
-    purchasedItems.push(cart[i]);
+    purchasedItems.push({
+      id: cart[i].id,
+      name: cart[i].name,
+      price: cart[i].price,
+      quantity: cart[i].quantity,
+      spec: cart[i].spec,
+      modifiers: cart[i].modifiers
+    });
   }
 
-  // Display receipt modal for current order number
-  showReceipt(currentOrderNumber, purchasedItems, total);
+  // Feature 8: Record transaction in session sales history
+  recordSale(currentOrderNumber, purchasedItems, subtotal, discount, total, amountPaid, change);
+
+  // Display receipt modal for current order number (Features 3, 4, 7)
+  showReceipt(currentOrderNumber, purchasedItems, subtotal, discount, total, amountPaid, change);
 }
 
+
+// ==========================================================================
+// 5. Search, Filter & Custom Product Functions (Features 1, 2, 6)
+// ==========================================================================
+
 /**
- * Filter the catalog items according to search input text.
- * Uses loops and conditional checks.
- * @param {string} query
+ * Filter product catalog by name and category (Features 1 & 2).
+ * Uses standard loops, conditions, and string matching.
  */
-function handleSearch(query) {
-  const trimmed = query.toLowerCase().trim();
-
-  if (trimmed === '') {
-    renderProducts(products);
-    return;
-  }
-
+function filterCatalog() {
   const filtered = [];
+  const query = currentSearchQuery.toLowerCase().trim();
+
   for (let i = 0; i < products.length; i++) {
     const item = products[i];
-    const nameMatch = item.name.toLowerCase().indexOf(trimmed) !== -1;
-    const skuMatch = item.sku.toLowerCase().indexOf(trimmed) !== -1;
-    const descMatch = item.description.toLowerCase().indexOf(trimmed) !== -1;
 
-    if (nameMatch || skuMatch || descMatch) {
+    // Feature 2: Filter products by category
+    let matchesCategory = false;
+    if (currentCategoryFilter === 'all') {
+      matchesCategory = true;
+    } else if (item.category && item.category.toLowerCase() === currentCategoryFilter.toLowerCase()) {
+      matchesCategory = true;
+    }
+
+    // Feature 1: Search for products by name
+    let matchesSearch = false;
+    if (query === '') {
+      matchesSearch = true;
+    } else if (item.name.toLowerCase().indexOf(query) !== -1) {
+      matchesSearch = true;
+    }
+
+    if (matchesCategory && matchesSearch) {
       filtered.push(item);
     }
   }
@@ -661,16 +848,277 @@ function handleSearch(query) {
   renderProducts(filtered);
 }
 
+/**
+ * Set active category filter and update pill styling (Feature 2).
+ * @param {string} category
+ */
+function setCategoryFilter(category) {
+  currentCategoryFilter = category;
+
+  const pills = document.querySelectorAll('.category-pill');
+  for (let i = 0; i < pills.length; i++) {
+    const pill = pills[i];
+    const cat = pill.getAttribute('data-category');
+    if (cat.toLowerCase() === category.toLowerCase()) {
+      pill.classList.add('active');
+    } else {
+      pill.classList.remove('active');
+    }
+  }
+
+  filterCatalog();
+}
+
+/**
+ * Handle search query typing (Feature 1).
+ * @param {string} query
+ */
+function handleSearch(query) {
+  currentSearchQuery = query;
+  filterCatalog();
+}
+
+/**
+ * Open custom product modal (Feature 6).
+ */
+function openCustomProductModal() {
+  const modal = document.getElementById('custom-product-modal');
+  if (modal) {
+    modal.classList.remove('hidden');
+    const nameInput = document.getElementById('custom-name-input');
+    if (nameInput) {
+      nameInput.focus();
+    }
+  }
+}
+
+/**
+ * Close custom product modal and reset form inputs (Feature 6).
+ */
+function closeCustomProductModal() {
+  const modal = document.getElementById('custom-product-modal');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+
+  const nameInput = document.getElementById('custom-name-input');
+  const priceInput = document.getElementById('custom-price-input');
+  if (nameInput) {
+    nameInput.value = '';
+  }
+  if (priceInput) {
+    priceInput.value = '';
+  }
+}
+
+/**
+ * Add a custom product with name and price (Feature 6).
+ * Validates inputs, creates new item object, adds to catalog and cart, and refreshes views.
+ */
+function handleAddCustomProduct() {
+  const nameInput = document.getElementById('custom-name-input');
+  const priceInput = document.getElementById('custom-price-input');
+  const categorySelect = document.getElementById('custom-category-select');
+
+  if (!nameInput || !priceInput) {
+    return;
+  }
+
+  const name = nameInput.value.trim();
+  const priceStr = priceInput.value.trim();
+  const category = categorySelect ? categorySelect.value : 'Custom';
+
+  if (name === '') {
+    alert('Please enter a valid product name.');
+    return;
+  }
+
+  const price = parseFloat(priceStr);
+  if (isNaN(price) || price <= 0) {
+    alert('Please enter a valid positive price.');
+    return;
+  }
+
+  const newId = products.length + 1;
+  const skuNum = newId < 10 ? '0' + newId : '' + newId;
+
+  const newProduct = {
+    id: newId,
+    sku: '#CUST-' + skuNum,
+    name: name,
+    price: price,
+    cartPrice: price,
+    category: category,
+    description: 'Custom product added by register cashier.',
+    tag: category + ' / Custom',
+    image: 'images/croissant.jpg',
+    spec: '',
+    modifiers: []
+  };
+
+  products.push(newProduct);
+
+  // Automatically add the custom item to the active cart
+  addToCart(newProduct.id);
+
+  // Refresh catalog grid
+  filterCatalog();
+
+  // Close modal and reset fields
+  closeCustomProductModal();
+}
+
 
 // ==========================================================================
-// 5. Event Listeners & System Initialization
+// 6. Sales History Functions (Feature 8)
+// ==========================================================================
+
+/**
+ * Record a completed transaction into session sales history (Feature 8).
+ * @param {number} orderNumber
+ * @param {Array} itemsList
+ * @param {number} subtotal
+ * @param {number} discount
+ * @param {number} total
+ * @param {number} amountPaid
+ * @param {number} change
+ */
+function recordSale(orderNumber, itemsList, subtotal, discount, total, amountPaid, change) {
+  const transaction = {
+    orderNumber: orderNumber,
+    timestamp: formatCurrentDateTime(),
+    items: itemsList,
+    subtotal: subtotal,
+    discount: discount,
+    total: total,
+    amountPaid: amountPaid,
+    change: change
+  };
+
+  salesHistory.push(transaction);
+  updateSalesHistoryBadge();
+}
+
+/**
+ * Update the sales history counter badge in the header.
+ */
+function updateSalesHistoryBadge() {
+  const badge = document.getElementById('history-badge');
+  if (badge) {
+    badge.textContent = salesHistory.length;
+  }
+}
+
+/**
+ * Render sales history cards and KPI statistics (Feature 8).
+ */
+function renderSalesHistory() {
+  const listContainer = document.getElementById('sales-history-list');
+  const metricOrderCount = document.getElementById('metric-order-count');
+  const metricTotalRevenue = document.getElementById('metric-total-revenue');
+  const metricAvgOrder = document.getElementById('metric-avg-order');
+
+  if (!listContainer) {
+    return;
+  }
+
+  let totalRevenue = 0;
+  for (let i = 0; i < salesHistory.length; i++) {
+    totalRevenue = totalRevenue + salesHistory[i].total;
+  }
+
+  const avgOrder = salesHistory.length > 0 ? (totalRevenue / salesHistory.length) : 0;
+
+  if (metricOrderCount) {
+    metricOrderCount.textContent = salesHistory.length;
+  }
+  if (metricTotalRevenue) {
+    metricTotalRevenue.textContent = formatCurrency(totalRevenue);
+  }
+  if (metricAvgOrder) {
+    metricAvgOrder.textContent = formatCurrency(avgOrder);
+  }
+
+  if (salesHistory.length === 0) {
+    listContainer.innerHTML =
+      '<div class="empty-history-message">' +
+        '<span class="material-symbols-outlined">receipt_long</span>' +
+        '<p>No transactions recorded yet in this session.</p>' +
+      '</div>';
+    return;
+  }
+
+  let html = '';
+  // Show in reverse order (newest completed order first)
+  for (let i = salesHistory.length - 1; i >= 0; i--) {
+    const sale = salesHistory[i];
+
+    let itemsSummary = '';
+    for (let j = 0; j < sale.items.length; j++) {
+      if (j > 0) {
+        itemsSummary = itemsSummary + ', ';
+      }
+      itemsSummary = itemsSummary + sale.items[j].quantity + 'x ' + sale.items[j].name;
+    }
+
+    let discountHtml = '';
+    if (sale.discount > 0) {
+      discountHtml = '<span class="history-discount">Discount: -' + formatCurrency(sale.discount) + '</span>';
+    }
+
+    html = html +
+      '<div class="history-item-card">' +
+        '<div class="history-item-header">' +
+          '<div class="history-order-id">' +
+            '<span class="order-badge">Order #' + sale.orderNumber + '</span>' +
+            '<span class="history-timestamp">' + sale.timestamp + '</span>' +
+          '</div>' +
+          '<span class="history-item-total numeric-value">' + formatCurrency(sale.total) + '</span>' +
+        '</div>' +
+        '<div class="history-items-breakdown">' + itemsSummary + '</div>' +
+        '<div class="history-financial-row">' +
+          '<span>Subtotal: ' + formatCurrency(sale.subtotal) + '</span>' +
+          discountHtml +
+          '<span>Paid: ' + formatCurrency(sale.amountPaid) + '</span>' +
+          '<span>Change: ' + formatCurrency(sale.change) + '</span>' +
+        '</div>' +
+      '</div>';
+  }
+
+  listContainer.innerHTML = html;
+}
+
+/**
+ * Open sales history modal (Feature 8).
+ */
+function openSalesHistoryModal() {
+  const modal = document.getElementById('sales-history-modal');
+  if (modal) {
+    renderSalesHistory();
+    modal.classList.remove('hidden');
+  }
+}
+
+/**
+ * Close sales history modal (Feature 8).
+ */
+function closeSalesHistoryModal() {
+  const modal = document.getElementById('sales-history-modal');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+}
+
+
+// ==========================================================================
+// 7. Event Listeners & System Initialization
 // ==========================================================================
 
 /**
  * Attach global event listeners to interactive elements.
  */
 function setupEventListeners() {
-  // Search Input live typing
+  // Feature 1: Search Input live typing
   const searchInput = document.getElementById('search-input');
   if (searchInput) {
     searchInput.addEventListener('input', function (e) {
@@ -688,7 +1136,48 @@ function setupEventListeners() {
     }
   });
 
-  // Clear / Void Cart Button
+  // Feature 2: Category Filter Pills
+  const categoryPills = document.querySelectorAll('.category-pill');
+  for (let i = 0; i < categoryPills.length; i++) {
+    const pill = categoryPills[i];
+    pill.addEventListener('click', function () {
+      const category = pill.getAttribute('data-category');
+      setCategoryFilter(category);
+    });
+  }
+
+  // Feature 4: Amount Paid live input
+  const amountPaidInput = document.getElementById('amount-paid-input');
+  if (amountPaidInput) {
+    amountPaidInput.addEventListener('input', updateChangeCalculation);
+  }
+
+  // Feature 4: Quick Cash buttons
+  const quickCashBtns = document.querySelectorAll('.quick-cash-btn');
+  for (let i = 0; i < quickCashBtns.length; i++) {
+    const btn = quickCashBtns[i];
+    btn.addEventListener('click', function () {
+      const action = btn.getAttribute('data-action');
+      const valStr = btn.getAttribute('data-value');
+
+      if (action === 'exact') {
+        const subtotal = calculateSubtotal(cart);
+        const discount = calculateDiscount(subtotal);
+        const total = calculateTotal(subtotal, discount);
+        if (amountPaidInput) {
+          amountPaidInput.value = total.toFixed(2);
+        }
+      } else if (valStr) {
+        const val = parseFloat(valStr);
+        if (amountPaidInput) {
+          amountPaidInput.value = val.toFixed(2);
+        }
+      }
+      updateChangeCalculation();
+    });
+  }
+
+  // Feature 5: Clear / Void Cart Button
   const btnClearCart = document.getElementById('btn-clear-cart');
   if (btnClearCart) {
     btnClearCart.addEventListener('click', clearCart);
@@ -705,15 +1194,56 @@ function setupEventListeners() {
   if (btnCloseReceipt) {
     btnCloseReceipt.addEventListener('click', closeReceiptModal);
   }
+
+  // Feature 6: Custom Product Modal Open / Close / Form Submit
+  const btnOpenCustom = document.getElementById('btn-open-custom-product');
+  if (btnOpenCustom) {
+    btnOpenCustom.addEventListener('click', openCustomProductModal);
+  }
+
+  const btnCloseCustom = document.getElementById('btn-close-custom-modal');
+  if (btnCloseCustom) {
+    btnCloseCustom.addEventListener('click', closeCustomProductModal);
+  }
+
+  const btnCancelCustom = document.getElementById('btn-cancel-custom');
+  if (btnCancelCustom) {
+    btnCancelCustom.addEventListener('click', closeCustomProductModal);
+  }
+
+  const customForm = document.getElementById('custom-product-form');
+  if (customForm) {
+    customForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      handleAddCustomProduct();
+    });
+  }
+
+  // Feature 8: Sales History Modal Open / Close
+  const btnOpenHistory = document.getElementById('btn-open-history');
+  if (btnOpenHistory) {
+    btnOpenHistory.addEventListener('click', openSalesHistoryModal);
+  }
+
+  const btnCloseHistory = document.getElementById('btn-close-history-modal');
+  if (btnCloseHistory) {
+    btnCloseHistory.addEventListener('click', closeSalesHistoryModal);
+  }
+
+  const btnHistoryDismiss = document.getElementById('btn-history-dismiss');
+  if (btnHistoryDismiss) {
+    btnHistoryDismiss.addEventListener('click', closeSalesHistoryModal);
+  }
 }
 
 /**
  * Application Entry Point: initialize product catalog, cart, totals, and listeners.
  */
 function init() {
-  renderProducts(products);
+  filterCatalog();
   renderCart();
   updateSummary();
+  updateSalesHistoryBadge();
   setupEventListeners();
   console.log('POS Register 01 system initialized successfully.');
 }

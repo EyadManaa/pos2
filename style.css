@@ -1060,4 +1060,511 @@ body {
   transform: scale(0.98);
 }
 
+/* ==========================================================================
+   Header Action Button & Sales Badge
+   ========================================================================== */
+.btn-header-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-on-surface);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-header-action:hover {
+  background-color: var(--color-surface-container-high);
+  border-color: var(--color-outline);
+}
+
+.history-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border-radius: 999px;
+  min-width: 20px;
+  height: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0 5px;
+}
+
+/* ==========================================================================
+   Catalog Controls & Category Filter Bar
+   ========================================================================== */
+.catalog-controls-bar {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--color-outline-variant);
+  background-color: var(--color-surface-container-lowest);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filter-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.category-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.category-pill {
+  border: 1px solid var(--color-outline-variant);
+  background-color: var(--color-surface-container-low);
+  color: var(--color-secondary);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.category-pill:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.category-pill.active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.btn-custom-product {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px dashed var(--color-primary);
+  background-color: rgba(0, 106, 96, 0.05);
+  color: var(--color-primary);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-custom-product:hover {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+/* ==========================================================================
+   Discount Summary Rows (Feature 3)
+   ========================================================================== */
+.discount-row {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.discount-value {
+  color: #15803d;
+  font-weight: 700;
+}
+
+.receipt-discount-row {
+  color: #15803d;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Payment & Change Calculation Section (Feature 4)
+   ========================================================================== */
+.payment-calc-section {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--color-outline-variant);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.payment-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.payment-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-secondary);
+}
+
+.payment-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 140px;
+}
+
+.currency-prefix {
+  position: absolute;
+  left: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-secondary);
+  pointer-events: none;
+}
+
+.payment-input {
+  width: 100%;
+  height: 32px;
+  padding-left: 24px;
+  padding-right: 8px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 6px;
+  background-color: var(--color-surface-container-low);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-on-surface);
+  text-align: right;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.payment-input:focus {
+  border-color: var(--color-primary);
+}
+
+.quick-cash-group {
+  display: flex;
+  gap: 4px;
+  justify-content: space-between;
+}
+
+.quick-cash-btn {
+  flex: 1;
+  height: 26px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 4px;
+  background-color: var(--color-surface-container-low);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-secondary);
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.quick-cash-btn:hover {
+  background-color: var(--color-surface-container-high);
+  color: var(--color-on-surface);
+  border-color: var(--color-outline);
+}
+
+.change-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+.change-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-on-surface);
+}
+
+.change-display {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.change-display.due-short {
+  color: #dc2626;
+}
+
+/* ==========================================================================
+   Generic Modal Cards & Form Elements (Feature 6 & 8)
+   ========================================================================== */
+.modal-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: var(--color-surface-container-lowest);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-outline-variant);
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-card.modal-large {
+  max-width: 620px;
+  max-height: 85vh;
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.modal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-primary);
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-on-surface);
+}
+
+.modal-subtitle {
+  margin: 2px 0 0 0;
+  font-size: 12px;
+  color: var(--color-secondary);
+}
+
+.btn-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--color-secondary);
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  transition: all 0.15s ease;
+}
+
+.btn-modal-close:hover {
+  background-color: var(--color-surface-container-high);
+  color: var(--color-on-surface);
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.form-input,
+.form-select {
+  height: 38px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 8px;
+  padding: 0 12px;
+  background-color: var(--color-surface-container-low);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--color-on-surface);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: var(--color-primary);
+  background-color: var(--color-surface-container-lowest);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-primary {
+  height: 40px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-container);
+}
+
+.btn-secondary {
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 8px;
+  background-color: var(--color-surface-container-low);
+  color: var(--color-secondary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-surface-container-high);
+  color: var(--color-on-surface);
+}
+
+/* ==========================================================================
+   Sales History Modal & Metric KPIs (Feature 8)
+   ========================================================================== */
+.history-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.history-metric-card {
+  background-color: var(--color-surface-container-low);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metric-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.metric-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.sales-history-list {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+
+.empty-history-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  color: var(--color-secondary);
+  gap: 8px;
+}
+
+.empty-history-message .material-symbols-outlined {
+  font-size: 40px;
+  opacity: 0.5;
+}
+
+.history-item-card {
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.history-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.history-order-id {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.history-timestamp {
+  font-size: 11px;
+  color: var(--color-secondary);
+}
+
+.history-item-total {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.history-items-breakdown {
+  font-size: 12px;
+  color: var(--color-on-surface);
+  line-height: 1.4;
+}
+
+.history-financial-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--color-secondary);
+  padding-top: 4px;
+  border-top: 1px dashed var(--color-outline-variant);
+  flex-wrap: wrap;
+}
+
+.history-discount {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.modal-footer {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
 
